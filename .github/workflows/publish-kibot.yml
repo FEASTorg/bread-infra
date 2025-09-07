@@ -40,7 +40,14 @@ jobs:
           python-version: "3.x"
 
       - name: Install Python deps
-        run: pip install markdown2 pyyaml
+        run: pip install pyyaml
+
+      - name: Checkout infra scripts
+        uses: actions/checkout@v4
+        with:
+          repository: FEASTorg/slice-infra
+          ref: main
+          path: _infra
 
       - name: Download KiBot artifact (for assets + index)
         uses: actions/download-artifact@v5
@@ -58,22 +65,18 @@ jobs:
           ROOT = "_kibot_art"
           cfg = yaml.safe_load(open("docs/kibot/config.kibot.site.yml"))
           pats = cfg.get("artifacts", []) or []
-          # tolerant alternates for iBOM naming
           ibom_alts = ["BoM/*_iBoM.html", "BoM/*ibom.html", "*_iBoM.html", "*ibom.html"]
           if not any("ibom" in p.lower() for p in pats):
               pats += ibom_alts
-
           files = []
           for r,_,fs in os.walk(ROOT):
             for f in fs:
               files.append(os.path.relpath(os.path.join(r,f), ROOT))
-
           def match(pat, rel):
             return (fnmatch.fnmatch(rel, pat) or
                     fnmatch.fnmatch(rel.lower(), pat.lower()) or
                     fnmatch.fnmatch(os.path.basename(rel), pat) or
                     fnmatch.fnmatch(os.path.basename(rel).lower(), pat.lower()))
-
           found = []
           seen = set()
           for pat in pats:
@@ -84,10 +87,8 @@ jobs:
               if base.lower() not in seen:
                 seen.add(base.lower())
                 found.append(base)
-
           core = ["Schematic.pdf", "PCB.pdf", "kibot.log"]
           final = [x for x in core if x in found] + [x for x in found if x not in core]
-
           with open(os.environ["GITHUB_OUTPUT"], "a") as g:
             g.write(f"list={','.join(final)}\n")
             g.write(f"project={cfg.get('project_name','')}\n")
@@ -95,7 +96,7 @@ jobs:
 
       - name: Generate docs/kibot/index.md
         run: |
-          python .github/workflows/generate_kibot_index.py \
+          python _infra/scripts/generate_kibot_index.py \
             --template docs/kibot/index_template.md \
             --out-md docs/kibot/index.md \
             --project "${{ steps.resolve.outputs.project }}" \

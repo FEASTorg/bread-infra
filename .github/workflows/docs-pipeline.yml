@@ -1,0 +1,33 @@
+name: Docs Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "hardware/**"
+      - "docs/**"
+      - "scripts/**"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  kibot:
+    uses: ./.github/workflows/kibot-ci.yml
+
+  gen-kibot-index:
+    uses: ./.github/workflows/publish-kibot.yml
+    needs: [kibot]
+    with:
+      kibot_run_id: ${{ needs.kibot.outputs.kibot_run_id }}
+
+  deploy-pages:
+    uses: ./.github/workflows/deploy-pages.yml
+    needs: [gen-kibot-index]
+    with:
+      kibot_run_id: ${{ needs.kibot.outputs.kibot_run_id }}
+      commit_sha: ${{ needs.gen-kibot-index.outputs.kibot_index_sha }}

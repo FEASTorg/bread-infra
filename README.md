@@ -1,5 +1,7 @@
 # slice_infra
 
+See [Slice_TEMP](https://github.com/FEASTorg/Slice_TEMP) for the required auxiliary and template files.
+
 ## Usage
 
 This repo contains reusable workflows and scripts for Slice hardware repos.

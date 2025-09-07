@@ -95,7 +95,7 @@ jobs:
 
       - name: Generate docs/kibot/index.md
         run: |
-          python scripts/generate_kibot_index.py \
+          python .github/workflows/generate_kibot_index.py \
             --template docs/kibot/index_template.md \
             --out-md docs/kibot/index.md \
             --project "${{ steps.resolve.outputs.project }}" \

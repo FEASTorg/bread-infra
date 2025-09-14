@@ -34,6 +34,9 @@ jobs:
       - name: Install PyYAML
         run: pip install --user pyyaml
 
+      - name: Inject theme assets from FEASTorg.github.io
+        run: python scripts/inject_feast_assets.py
+
       - name: Load artifact list
         id: cfg
         run: |

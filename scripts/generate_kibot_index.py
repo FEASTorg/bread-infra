@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
+"""
+Generate an index.md file for KiBot build artifacts,
+using either a YAML config or direct CLI input.
+"""
 
 import argparse
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
-import sys
+
 import yaml
 
 
 def load_config(config_file: Path) -> dict:
+    """Load and return the YAML config as a dictionary."""
     with config_file.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
 
@@ -15,7 +21,7 @@ def load_config(config_file: Path) -> dict:
 def render_template(
     template: str, project: str, artifacts: list[str], timestamp: str
 ) -> str:
-    # preserve order, drop duplicates
+    """Render the Markdown index from the template and input data."""
     seen = set()
     uniq = [
         a.strip()
@@ -31,6 +37,7 @@ def render_template(
 
 
 def main():
+    """Main script logic for generating index.md."""
     parser = argparse.ArgumentParser(description="Generate index.md for KiBot outputs")
     parser.add_argument(
         "-c", "--config", type=Path, help="Path to config.kibot.site.yml"
@@ -67,6 +74,7 @@ def main():
 
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text(index_md.rstrip() + "\n", encoding="utf-8")
+
     print(f"✔ Wrote {args.out_md}")
 
 

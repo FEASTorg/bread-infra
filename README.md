@@ -4,7 +4,7 @@ See [Slice_TEMP](https://github.com/FEASTorg/Slice_TEMP) for the required auxili
 
 ## Usage
 
-This repo contains reusable workflows and scripts for Slice hardware repos.
+This repo contains reusable workflows and scripts for BREAD hardware repos.
 It is not meant to be triggered directly.
 
 To use in other repos, call the workflow like this:

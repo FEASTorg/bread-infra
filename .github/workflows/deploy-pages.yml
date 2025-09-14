@@ -34,6 +34,13 @@ jobs:
       - name: Install PyYAML
         run: pip install --user pyyaml
 
+      - name: Checkout infra scripts
+        uses: actions/checkout@v4
+        with:
+          repository: FEASTorg/bread-infra
+          ref: main
+          path: _infra
+
       - name: Inject FEAST theme assets (if configured)
         run: |
           python _infra/scripts/inject_feast_assets.py

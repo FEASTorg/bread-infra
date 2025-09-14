@@ -1,4 +1,4 @@
-# slice-infra
+# bread-infra
 
 See [Slice_TEMP](https://github.com/FEASTorg/Slice_TEMP) for the required auxiliary and template files.
 
@@ -24,16 +24,16 @@ on:
 
 jobs:
   kibot:
-    uses: FEASTorg/slice-infra/.github/workflows/kibot-ci.yml@main
+    uses: FEASTorg/bread-infra/.github/workflows/kibot-ci.yml@main
 
   gen-kibot-index:
-    uses: FEASTorg/slice-infra/.github/workflows/publish-kibot.yml@main
+    uses: FEASTorg/bread-infra/.github/workflows/publish-kibot.yml@main
     needs: [kibot]
     with:
       kibot_run_id: ${{ needs.kibot.outputs.kibot_run_id }}
 
   deploy-pages:
-    uses: FEASTorg/slice-infra/.github/workflows/deploy-pages.yml@main
+    uses: FEASTorg/bread-infra/.github/workflows/deploy-pages.yml@main
     needs: [gen-kibot-index]
     with:
       kibot_run_id: ${{ needs.kibot.outputs.kibot_run_id }}

@@ -1,6 +1,6 @@
 # bread-infra
 
-See [Slice_TEMP](https://github.com/FEASTorg/Slice_TEMP) for the required auxiliary and template files.
+See [Slice_TEMP](https://github.com/FEASTorg/Slice_TEMP) for an example of the required auxiliary and template files.
 
 ## Usage
 
